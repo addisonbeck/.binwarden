@@ -253,6 +253,7 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable vncserver@1.service
 echo "export DISPLAY=:1" >> /home/$OSUSERNAME/.bash_profile
+echo "123456" | vncpasswd -f
 }
 
 setup_directory_connector () {
