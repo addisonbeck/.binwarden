@@ -15,18 +15,6 @@ source /home/$OSUSERNAME/environment-setup/formatters.sh
 cd /home/$OSUSERNAME
 export DEBIAN_FRONTEND=noninteractive
 
-install_package () {
-  sudo apt-get -qq -o "DPkg::Lock::Timeout=180" install $1 > /dev/null
-}
-
-update_packages () {
-  sudo apt-get -qq -o "DPkg::Lock::Timeout=180" update > /dev/null
-}
-
-upgrade_packages () {
-  sudo -E apt-get -qq -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" -o "DPkg::Lock::Timeout=180" upgrade > /dev/null
-}
-
 h2 "Setting up a dev environment"
 
 install_git () {

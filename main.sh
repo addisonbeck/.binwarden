@@ -26,9 +26,9 @@ determine_os () {
 prepare_linux () {
   h2 "Preparing linux"
   h3 "Removing needrestart, we're going to reboot at the end of all this"
-  sudo apt-get -qq remove needrestart
+  remove_package needrestart
   h3 "Installing unzip"
-  sudo apt-get -qq install unzip
+  install_package unzip
 }
 
 prepare_os () {
