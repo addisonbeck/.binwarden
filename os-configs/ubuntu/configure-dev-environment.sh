@@ -15,11 +15,23 @@ source /home/$OSUSERNAME/environment-setup/formatters.sh
 cd /home/$OSUSERNAME
 export DEBIAN_FRONTEND=noninteractive
 
+install_package () {
+  sudo apt-get -qq -o "DPkg::Lock::Timeout=180" install $1 > /dev/null
+}
+
+update_packages () {
+  sudo apt-get -qq -o "DPkg::Lock::Timeout=180" update > /dev/null
+}
+
+upgrade_packages () {
+  sudo -E apt-get -qq -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" -o "DPkg::Lock::Timeout=180" upgrade > /dev/null
+}
+
 h2 "Setting up a dev environment"
 
 install_git () {
   h3 "Installing git"
-  sudo apt-get -qq install git
+  install_package "git"
   h3 "Configuring git"
   git config --global user.name $GITFULLNAME
   git config --global user.email $EMAIL
@@ -29,7 +41,7 @@ install_git () {
 
 install_gh () {
   h3 "Installing the Github CLI"
-  sudo apt-get -qq install gh
+  install_package "gh"
   h3 "Saving your Github PAT as an environment variable"
   echo "export GH_TOKEN=$GITHUBPAT" >> /home/$OSUSERNAME/.bash_profile
   h3 "Reloading your bash profile"
@@ -44,18 +56,18 @@ install_docker () {
   sudo usermod -aG docker $OSUSERNAME
 
   echo "Installing Docker"
-  sudo apt-get -qq install apt-transport-https ca-certificates curl software-properties-common
+  install_package "apt-transport-https ca-certificates curl software-properties-common"
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
-  sudo apt-get -qq update
-  sudo apt-get -qq install docker-ce
+  update_packages
+  install_package "docker-ce"
 }
 
 setup_commit_signing () {
   h3 "Setting up commit signing"
 
   h3 "Installing gnupg"
-  sudo apt-get -qq install gnup
+  install_package "gnup"
 
   h3 "Building a gpg key"
   PASSPHRASE=$(openssl rand -base64 12)
@@ -80,9 +92,9 @@ EOF
 
 update_packages () {
   h3 "Updating & upgrading packages"
-  sudo apt-get -qq update
+  update_packages
   # We are telling upgrade very very loudly not to ask for any user input
-  sudo -E apt-get -qy -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+  upgrade_packages
 }
 
 # This function registers the official microsoft repo as the source for MS packages on the machine
@@ -91,8 +103,8 @@ update_packages () {
 # https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.3#installation-via-package-repository-the-package-repository
 register_microsoft_repo () {
   h3 "Connecting to the Microsoft package repo"
-  sudo apt-get update -qq
-  sudo apt-get install -qq wget apt-transport-https software-properties-common
+  update_packages
+  install_package "wget apt-transport-https software-properties-common"
   source /etc/os-release
   wget -q https://packages.microsoft.com/config/ubuntu/$VERSION_ID/packages-microsoft-prod.deb
   sudo dpkg -i packages-microsoft-prod.deb
@@ -102,17 +114,17 @@ register_microsoft_repo () {
   h3 "Deleting install file"
   rm packages-microsoft-prod.deb
   h3 "Updating packages"
-  sudo apt-get update -qq
+  update_packages
 }
 
 install_powershell () {
   h3 "Installing Powershell"
-  sudo apt-get -o DPkg::Lock::Timeout=180 install -qq powershell
+  install_package "powershell"
 }
 
 install_dotnet_sdk () {
   h3 "Installing Dotnet 6"
-  sudo apt-get -o DPkg::Lock::Timeout=180 install -qq dotnet-sdk-6.0
+  install_package "dotnet-sdk-6.0"
 }
 
 setup_bitwarden_server () {
@@ -198,7 +210,7 @@ install_node () {
 setup_web () {
   h3 "Setting up the web vault"
   h3 "Generating a cert"
-  sudo apt install -qq libnss3-tools
+  install_package "libnss3-tools"
   curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
   chmod +x mkcert-v*-linux-amd64
   sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
@@ -208,8 +220,9 @@ setup_web () {
 
 setup_desktop () {
   h3 "Installing xfce and vnc"
-  sudo apt install xfce4 xfce4-goodies
-  sudo apt install tightvncserver
+  install_package "xfce4 xfce4-goodies"
+  install_package "tightvncserver"
+  mkdir -p /home/$OSUSERNAME/.vnc
   touch /home/$OSUSERNAME/.vnc/xstartup
   cat <<EOT >> /home/$OSUSERNAME/.vnc/xstartup
 #!/bin/bash
