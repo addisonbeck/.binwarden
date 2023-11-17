@@ -19,7 +19,7 @@ This tool installs the bare minimum software for building and working with Bitwa
     ```bash
     mkdir environment-setup && \
     cd environment-setup && \
-    curl -s https://raw.githubusercontent.com/addisonbeck/environment-setup/main/main.sh \
+    curl -s https://raw.githubusercontent.com/addisonbeck/environment-setup/dev/main.sh \
     --output main.sh && \
     bash main.sh
     ```
