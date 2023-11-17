@@ -4,11 +4,8 @@ REPOPATH=https://raw.githubusercontent.com/addisonbeck/environment-setup/dev
 OSCONFIGPATH=$REPOPATH/os-configs
 DEVCONFIGPATH=$REPOPATH/dev-configs
 
-install_self () {
-  echo "Downloading the builder tools"
-  curl -s https://raw.githubusercontent.com/addisonbeck/environment-setup/main/lib/formatters.sh --output formatters.sh
-  source formatters.sh
-}
+curl -s https://raw.githubusercontent.com/addisonbeck/environment-setup/main/lib/formatters.sh --output formatters.sh
+source formatters.sh
 
 determine_os () {
   h2 "Determining OS"
@@ -127,8 +124,6 @@ configure_environment () {
     ;;
   esac
 }
-
-install_self
 
 h1 "Building environment"
 
