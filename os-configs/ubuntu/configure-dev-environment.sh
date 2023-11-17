@@ -9,6 +9,7 @@ INSTALLATIONID=$6
 INSTALLATIONKEY=$7
 LICENSEPW=$8
 DBPASSWORD=$9
+VNCPASSWORD=$10
 
 source /home/$OSUSERNAME/environment-setup/formatters.sh
 
@@ -242,9 +243,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable vncserver@1.service
 echo "export DISPLAY=:1" >> /home/$OSUSERNAME/.bash_profile
 
-mypasswd="123456"
-
-echo $mypasswd | vncpasswd -f > /home/$OSUSERNAME/.vnc/passwd
+echo $VNCPASSWORD | vncpasswd -f > /home/$OSUSERNAME/.vnc/passwd
 chown -R $OSUSERNAME:$OSUSERNAME /home/$OSUSERNAME/.vnc
 chmod 0600 /home/$OSUSERNAME/.vnc/passwd
 }

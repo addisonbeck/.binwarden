@@ -78,6 +78,7 @@ parse_config () {
   GITHUBPAT=$(parse_config_item_custom_field "github-pat")
   INSTALLATIONID=$(parse_config_item_custom_field "installation-id")
   INSTALLATIONKEY=$(parse_config_item_custom_field "installation-key")
+  VNCPASSWORD=$(parse_config_item_custom_field "vnc-password")
   ./bw get attachment secrets-for-env-setup.json --itemid d4195f67-dd43-4465-84d7-ae320013e6ff --session $BW_SESSION
   sudo mv secrets-for-env-setup.json secrets.json
   ./bw get attachment additional-keys-for-cloud-services.json --itemid d4195f67-dd43-4465-84d7-ae320013e6ff --session $BW_SESSION
@@ -103,7 +104,7 @@ configure_ubuntu () {
   h2 "Running the rest of the process as $OSUSERNAME"
   su -s /bin/bash -c "curl -s $OSCONFIGPATH/ubuntu/configure-dev-environment.sh --output configure-dev-environment.sh" -l $OSUSERNAME
   su -s /bin/bash -c "curl -s $OSCONFIGPATH/ubuntu/startup.sh --output startup.sh" -l $OSUSERNAME
-  su -s /bin/bash -c "bash configure-dev-environment.sh '$OSUSERNAME' '$PROJECTSFOLDERNAME' '$GITFULLNAME' '$EMAIL' '$GITHUBPAT' '$INSTALLATIONID' '$INSTALLATIONKEY' '$LICENSINGCERTPW' '$DATABASEPASSWORD'" -l $OSUSERNAME
+  su -s /bin/bash -c "bash configure-dev-environment.sh '$OSUSERNAME' '$PROJECTSFOLDERNAME' '$GITFULLNAME' '$EMAIL' '$GITHUBPAT' '$INSTALLATIONID' '$INSTALLATIONKEY' '$LICENSINGCERTPW' '$DATABASEPASSWORD' '$VNCPASSWORD'" -l $OSUSERNAME
 }
 
 configure_environment () {
