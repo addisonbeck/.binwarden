@@ -90,7 +90,7 @@ EOF
  git config --global commit.gpgsign true
 }
 
-update_packages () {
+update_all_packages () {
   h3 "Updating & upgrading packages"
   update_packages
   # We are telling upgrade very very loudly not to ask for any user input
@@ -266,7 +266,7 @@ install_git
 install_gh
 install_docker
 setup_commit_signing
-update_packages
+update_all_packages
 register_microsoft_repo
 install_powershell
 install_dotnet_sdk
