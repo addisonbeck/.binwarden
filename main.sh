@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPOPATH=https://raw.githubusercontent.com/addisonbeck/environment-setup/main
+REPOPATH=https://raw.githubusercontent.com/addisonbeck/environment-setup/dev
 OSCONFIGPATH=$REPOPATH/os-configs
 DEVCONFIGPATH=$REPOPATH/dev-configs
 
