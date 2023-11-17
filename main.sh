@@ -4,7 +4,7 @@ REPOPATH=https://raw.githubusercontent.com/addisonbeck/environment-setup/dev
 OSCONFIGPATH=$REPOPATH/os-configs
 DEVCONFIGPATH=$REPOPATH/dev-configs
 
-curl -s https://raw.githubusercontent.com/addisonbeck/environment-setup/main/lib/formatters.sh --output formatters.sh
+curl -s $REPOPATH/lib/formatters.sh --output formatters.sh
 source formatters.sh
 
 determine_os () {
