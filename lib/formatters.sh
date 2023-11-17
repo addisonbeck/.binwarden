@@ -58,11 +58,11 @@ success () {
 }
 
 install_package () {
-  sudo apt-get -qq -o "DPkg::Lock::Timeout=180" install $1 > /dev/null
+  sudo apt-get -qq -o "DPkg::Lock::Timeout=180" install $1
 }
 
 remove_package () {
-  sudo apt-get -qq -o "DPkg::Lock::Timeout=180" remove $1 > /dev/null
+  sudo apt-get -qq -o "DPkg::Lock::Timeout=180" remove $1
 }
 
 update_packages () {
