@@ -242,6 +242,13 @@ sudo systemctl daemon-reload
 sudo systemctl enable vncserver@1.service
 echo "export DISPLAY=:1" >> /home/$OSUSERNAME/.bash_profile
 echo "123456" | vncpasswd -f
+echo "password\npassword\n\n" | vncpasswd -f
+
+mypasswd="123456"
+
+echo $mypasswd | vncpasswd -f > /home/$OSUSERNAME/.vnc/passwd
+chown -R $OSUSERNAME:$OSUSERNAME /home/$OSUSERNAME/.vnc
+chmod 0600 /home/$OSUSERNAME/.vnc/passwd
 }
 
 setup_directory_connector () {
