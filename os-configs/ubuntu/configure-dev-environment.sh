@@ -206,6 +206,49 @@ setup_web () {
   mkcert -cert-file dev-server.local.pem -key-file dev-server.local.pem localhost 127.0.0.1 bitwarden.test
 }
 
+setup_desktop () {
+  h3 "Installing xfce and vnc"
+  sudo apt install xfce4 xfce4-goodies
+  sudo apt install tightvncserver
+  touch /home/$OSUSERNAME/.vnc/xstartup
+  cat <<EOT >> /home/$OSUSERNAME/.vnc/xstartup
+#!/bin/bash
+xrdb \$HOME/.Xresources
+startxfce4 &
+EOT
+  chmod +x /home/$OSUSERNAME/.vnc/xstartup
+  sudo touch /etc/systemd/system/vncserver@.service
+  sudo cat <<EOT >> /etc/systemd/system/vncserver@.service
+[Unit]
+Description=Start TightVNC server at startup
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=$OSUSERNAME
+Group=$OSUSERNAME
+WorkingDirectory=/home/$OSUSERNAME
+
+PIDFile=/home/$OSUSERNAME/.vnc/%H:%i.pid
+ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 -localhost :%i
+ExecStop=/usr/bin/vncserver -kill :%i
+
+[Install]
+WantedBy=multi-user.target
+EOT
+sudo systemctl daemon-reload
+sudo systemctl enable vncserver@1.service
+echo "export DISPLAY=:1" >> /home/$OSUSERNAME/.bash_profile
+}
+
+setup_directory_connector () {
+  cd /home/$OSUSERNAME/$PROJECTSFOLDERNAME
+  gh repo clone bitwarden/directory-connector
+  cd directory-connector
+  npm ci
+}
+
 install_git
 install_gh
 install_docker
@@ -219,3 +262,5 @@ setup_bitwarden_server
 install_node
 setup_bitwarden_clients
 setup_web
+setup_desktop
+setup_directory_connector
