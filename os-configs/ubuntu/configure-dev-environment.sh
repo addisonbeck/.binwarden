@@ -210,19 +210,20 @@ setup_web () {
 setup_desktop () {
   h3 "Installing xfce and vnc"
   install_package "xfce4 xfce4-goodies"
-  install_package "tightvncserver"
+  install_package "tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer"
   mkdir -p /home/$OSUSERNAME/.vnc
   touch /home/$OSUSERNAME/.vnc/xstartup
   cat <<EOT >> /home/$OSUSERNAME/.vnc/xstartup
 #!/bin/bash
 xrdb \$HOME/.Xresources
+vncconfig &
 startxfce4 &
 EOT
   chmod +x /home/$OSUSERNAME/.vnc/xstartup
   sudo touch /etc/systemd/system/vncserver@.service
   sudo tee /etc/systemd/system/vncserver@.service <<EOF
 [Unit]
-Description=Start TightVNC server at startup
+Description=Start TigerVNC server at startup
 After=syslog.target network.target
 
 [Service]
