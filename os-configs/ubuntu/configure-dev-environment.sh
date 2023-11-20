@@ -256,7 +256,7 @@ setup_directory_connector () {
 
   cd /home/$OSUSERNAME/$PROJECTSFOLDERNAME/server/dev
   curl -s --location "https://contributing.bitwarden.com/assets/files/directory-20-54a0601795a014cf9f68b11c77a6cb27.ldif" --output directory.ldif
-  docker-compose --profile ldap up -d
+  sudo docker compose --profile ldap up -d
 }
 
 install_git
