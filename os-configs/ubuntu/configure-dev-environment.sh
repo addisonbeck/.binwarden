@@ -214,7 +214,7 @@ setup_desktop () {
   install_package "tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer"
   mkdir -p /home/$OSUSERNAME/.vnc
   chown -R $OSUSERNAME:$OSUSERNAME /home/$OSUSERNAME/.vnc
-  vncpasswd -f <<< $VNCPASSWORD > "/home/$OSUSERNAME/.vnc/passwd"
+  printf "$VNCPASSWORD\n$VNCPASSWORD\n\n" | vncpasswd
   chmod 0600 /home/$OSUSERNAME/.vnc/passwd
   touch /home/$OSUSERNAME/.vnc/xstartup
   cat <<EOT >> /home/$OSUSERNAME/.vnc/xstartup
