@@ -209,9 +209,13 @@ setup_web () {
 
 setup_desktop () {
   h3 "Installing xfce and vnc"
+  echo "export DISPLAY=:1" >> /home/$OSUSERNAME/.bash_profile
   install_package "xfce4 xfce4-goodies"
   install_package "tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer"
   mkdir -p /home/$OSUSERNAME/.vnc
+  chown -R $OSUSERNAME:$OSUSERNAME /home/$OSUSERNAME/.vnc
+  vncpasswd -f <<< $VNCPASSWORD > "/home/$OSUSERNAME/.vnc/passwd"
+  chmod 0600 /home/$OSUSERNAME/.vnc/passwd
   touch /home/$OSUSERNAME/.vnc/xstartup
   cat <<EOT >> /home/$OSUSERNAME/.vnc/xstartup
 #!/bin/bash
@@ -232,8 +236,6 @@ User=$OSUSERNAME
 Group=$OSUSERNAME
 WorkingDirectory=/home/$OSUSERNAME
 
-PIDFile=/home/$OSUSERNAME/.vnc/%H:%i.pid
-ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
 ExecStart=/usr/bin/vncserver -depth 24 -geometry 1920x1080 -localhost :%i
 ExecStop=/usr/bin/vncserver -kill :%i
 
@@ -242,11 +244,6 @@ WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload
 sudo systemctl enable vncserver@1.service
-echo "export DISPLAY=:1" >> /home/$OSUSERNAME/.bash_profile
-
-echo $VNCPASSWORD | vncpasswd -f > /home/$OSUSERNAME/.vnc/passwd
-chown -R $OSUSERNAME:$OSUSERNAME /home/$OSUSERNAME/.vnc
-chmod 0600 /home/$OSUSERNAME/.vnc/passwd
 }
 
 setup_directory_connector () {
