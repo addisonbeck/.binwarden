@@ -217,7 +217,7 @@ setup_desktop () {
 #!/bin/bash
 xrdb \$HOME/.Xresources
 vncconfig &
-startxfce4 &
+startxfce4
 EOT
   chmod +x /home/$OSUSERNAME/.vnc/xstartup
   sudo touch /etc/systemd/system/vncserver@.service
