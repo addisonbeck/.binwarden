@@ -220,6 +220,7 @@ setup_desktop () {
   cat <<EOT >> /home/$OSUSERNAME/.vnc/xstartup
 #!/bin/bash
 xrdb \$HOME/.Xresources
+xset s off
 vncconfig &
 startxfce4
 EOT

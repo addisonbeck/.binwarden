@@ -4,6 +4,14 @@ source /root/environment-setup/formatters.sh
 
 h2 "Configuring an ubuntu user account"
 
+setup_swap () {
+  sudo fallocate -l 8G /swapfile
+  sudo chmod 600 /swapfile
+  sudo mkswap /swapfile
+  sudo swapon /swapfile
+  echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+}
+
 build_user_directory () {
   h3 "Scaffolding user folder and files"
   mkdir -p /home/$OSUSERNAME/.ssh
@@ -45,6 +53,7 @@ move_self () {
   chown -R $OSUSERNAME:$OSUSERNAME /home/$OSUSERNAME/environment-setup
 }
 
+setup_swap
 build_user_directory
 copy_user_ssh_keys
 create_user
