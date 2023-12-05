@@ -13,8 +13,6 @@ init () {
   source install-bitwarden
   source configure-secrets
 
-  echo $BW_CONFIG
-
   export OSUSERNAME=$(parse_config_item_custom_field "system-username" $BW_CONFIG)
   export PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" $BW_CONFIG)
 }
