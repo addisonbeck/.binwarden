@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source platform
+
+setup_certs () {
+  bw get attachment dev.cer --itemid 7123e5d3-f837-4a8c-810a-a7ca00fe1fdd --session $BW_SESSION
+  bw get attachment dev.pfx --itemid 7123e5d3-f837-4a8c-810a-a7ca00fe1fdd --session $BW_SESSION
+
+  sudo openssl x509 -inform DER -in dev.cer -out dev.crt
+  sudo mv dev.crt /usr/local/share/ca-certificates/
+  sudo chmod 644 /usr/local/share/ca-certificates/dev.crt
+
+  sudo update-ca-certificates
+}
+
+setup_certs

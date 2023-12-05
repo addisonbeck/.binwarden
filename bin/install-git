@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+
+source platform
+
+GITFULLNAME=$(parse_config_item_custom_field "git-full-name" $BW_CONFIG)
+EMAIL=$(parse_config_item "['login']['username']" $BW_CONFIG)
+
+install_git () {
+  install_package "git"
+  git config --global user.name $GITFULLNAME
+  git config --global user.email $EMAIL
+  git config --global init.defaultBranch main
+
+  bw get attachment signing-key --itemid $ITEM_ID --session $BW_SESSION 
+  bw get attachment signing-key.pub --itemid $ITEM_ID --session $BW_SESSION 
+  sudo mv signing-key $HOME/.ssh/
+  sudo mv signing-key.pub $HOME/.ssh/
+
+  git config --global gpg.format ssh
+  git config --global user.signingkey $HOME/.ssh/signing-key.pub
+  git config --global commit.gpgsign true
+}
+
+install_git

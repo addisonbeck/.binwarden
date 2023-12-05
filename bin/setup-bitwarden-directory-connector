@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+
+source platform
+
+PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" $BW_CONFIG)
+
+setup_directory_connector () {
+  mkdir $HOME/$PROJECTSFOLDERNAME
+  cd $HOME/$PROJECTSFOLDERNAME
+  git clone git@github.com:bitwarden/directory-connector
+  cd directory-connector
+  npm ci
+  cd $HOME/$PROJECTSFOLDERNAME/server/dev
+  curl -s --location "https://contributing.bitwarden.com/assets/files/directory-20-54a0601795a014cf9f68b11c77a6cb27.ldif" --output directory.ldif
+  sudo docker compose --profile ldap up -d
+}
+
+setup_directory_connector

@@ -1,0 +1,48 @@
+#!/usr/bin/bash
+
+VNCPASSWORD=$(parse_config_item_custom_field "vnc-password" $BW_CONFIG)
+
+install_vnc () {
+  echo "export DISPLAY=:1" >> $HOME/.profile
+  install_package "xfce4 xfce4-goodies"
+  install_package "tigervnc-standalone-server tigervnc-xorg-extension tigervnc-viewer"
+  mkdir -p $HOME/.vnc
+  chown -R $(whoami):$(whoami) $HOME/.vnc
+  printf "$VNCPASSWORD\n$VNCPASSWORD\n\n" | vncpasswd
+  chmod 0600 $HOME/.vnc/passwd
+  touch $HOME/.vnc/xstartup
+
+  cat <<EOT >> $HOME/.vnc/xstartup
+#!/bin/bash
+xrdb \$HOME/.Xresources
+xset s off
+vncconfig &
+startxfce4
+EOT
+
+  chmod +x $HOME/.vnc/xstartup
+  sudo touch /etc/systemd/system/vncserver@.service
+
+  sudo tee /etc/systemd/system/vncserver@.service <<EOF
+[Unit]
+Description=Start TigerVNC server at startup
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=$(whoami)
+Group=$(whoami)
+WorkingDirectory=$HOME
+
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 1920x1080 -localhost :%i
+ExecStop=/usr/bin/vncserver -kill :%i
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+  sudo systemctl daemon-reload
+  sudo systemctl enable vncserver@1.service
+}
+
+install_vnc

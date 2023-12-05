@@ -13,15 +13,22 @@ This tool installs the bare minimum software for building and working with Bitwa
 
 ## Instructions
 
-1. To begin: ensure you have a clean machine. So far this has only been tested as a fresh Ubuntu 22.04 droplet on Digital Ocean.
-1. To configure: Open [this configuration template vault item](https://vault.bitwarden.com/#/vault?organizationId=4e5d875e-e6a1-4c3a-a053-a9dc01180a42&itemId=898ec3f8-14ca-4354-b2f3-b0b2014f12fa). It is a configuration template. Follow the instructions written in the note of the template.
-1. To start the installer: open a terminal on the machine you are configuring and run the following command:
-    ```bash
-    mkdir environment-setup && \
-    cd environment-setup && \
-    curl -s https://raw.githubusercontent.com/addisonbeck/environment-setup/dev/main.sh \
-    --output main.sh && \
-    bash main.sh
-    ```
-1. You will be asked to authenticate with the Bitwarden CLI to pull information from your "bitwarden-environment-setup" vault item.
-1. Once the installer is complete: run any supplementary scripts you would like, and reboot the machine before using.
+To configure: Open [this configuration template vault item](https://vault.bitwarden.com/#/vault?organizationId=4e5d875e-e6a1-4c3a-a053-a9dc01180a42&itemId=898ec3f8-14ca-4354-b2f3-b0b2014f12fa). It is a configuration template. Follow the instructions written in the note of the template.
+
+To build a user and install from root on a fresh machine:
+
+```bash
+curl -s https://raw.githubusercontent.com/addisonbeck/environment-setup/dev/bin/provision-machine \
+--output main.sh && \
+bash main.sh
+```
+
+To install on an existing machine:
+
+```bash
+cd ~ &&
+git init &&
+git remote add origin https://github.com/addisonbeck/environment-builder.git &&
+git fetch &&
+git checkout -f dev
+```

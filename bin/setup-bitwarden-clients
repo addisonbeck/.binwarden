@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source platform
+
+PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" $BW_CONFIG)
+
+setup_bitwarden_clients () {
+  mkdir $HOME/$PROJECTSFOLDERNAME
+  cd $HOME/$PROJECTSFOLDERNAME
+  git clone git@github.com:bitwarden/clients
+  cd clients
+  npm ci
+  git config blame.ignoreRevsFile .git-blame-ignore-revs
+  install_package "gnome-keyring libsecret-common libsecret-1-0 libsecret-1-dev libsecret-tools"
+}
+
+setup_bitwarden_clients

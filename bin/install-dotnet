@@ -1,0 +1,42 @@
+#!/usr/bin/bash
+
+source platform 
+
+register_microsoft_repo () {
+  h3 "Connecting to the Microsoft package repo"
+  update_packages
+  install_package "wget apt-transport-https software-properties-common"
+  source /etc/os-release
+  wget -q https://packages.microsoft.com/config/ubuntu/$VERSION_ID/packages-microsoft-prod.deb
+  sudo dpkg -i packages-microsoft-prod.deb
+  h3 "Setting the priority of the Microsoft repo to high"
+  sudo touch /etc/apt/preferences
+  echo -e "Package: * \nPin: origin \"packages.microsoft.com\" \nPin-Priority: 1001" | sudo tee -a /etc/apt/preferences > /dev/null
+  h3 "Deleting install file"
+  rm packages-microsoft-prod.deb
+  h3 "Updating packages"
+  update_packages
+}
+
+install_powershell () {
+  h3 "Installing Powershell"
+  install_package "powershell"
+}
+
+install_dotnet_6 () {
+  install_package "dotnet-sdk-6.0"
+}
+
+install_dotnet_7 () {
+  install_package "dotnet-sdk-7.0"
+}
+
+install_dotnet_8 () {
+  install_package "dotnet-sdk-8.0"
+}
+
+register_microsoft_repo
+install_powershell
+install_dotnet_6
+install_dotnet_7
+install_dotnet_8
