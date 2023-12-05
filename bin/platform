@@ -87,12 +87,10 @@ upgrade_packages () {
 }
 
 parse_config_item () {
-  echo "Config: ${2}"
   echo ${2} | python3 -c "import sys, json; print(json.load(sys.stdin)[0]${1})"
 }
 
 parse_config_item_custom_field () {
-  echo "Config: ${2}"
   echo ${2} | python3 -c "import sys, json; print(next(cf for cf in json.load(sys.stdin)[0]['fields'] if cf['name'] == '${1}')['value'])"
 }
 

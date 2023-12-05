@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-VNCPASSWORD=$(parse_config_item_custom_field "vnc-password" $BW_CONFIG)
+VNCPASSWORD=$(parse_config_item_custom_field "vnc-password" "$BW_CONFIG")
 
 install_vnc () {
   echo "export DISPLAY=:1" >> $HOME/.profile

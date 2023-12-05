@@ -2,7 +2,7 @@
 
 source platform
 
-PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" $BW_CONFIG)
+PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" "$BW_CONFIG")
 
 setup_bitwarden_clients () {
   mkdir $HOME/$PROJECTSFOLDERNAME

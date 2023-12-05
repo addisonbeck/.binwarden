@@ -2,11 +2,11 @@
 
 source platform
 
-PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" $BW_CONFIG)
-DBPASSWORD=$(bw generate --passphrase --words 3 -c --includeNumber --separator - --session $BW_SESSION)
-INSTALLATIONID=$(parse_config_item_custom_field "installation-id" $BW_CONFIG)
-INSTALLATIONKEY=$(parse_config_item_custom_field "installation-key" $BW_CONFIG)
-LICENSINGCERTPW=$(bw get password 7123e5d3-f837-4a8c-810a-a7ca00fe1fdd --session $BW_SESSION)
+PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" "$BW_CONFIG")
+DBPASSWORD=$(bw generate --passphrase --words 3 -c --includeNumber --separator - --session "$BW_SESSION")
+INSTALLATIONID=$(parse_config_item_custom_field "installation-id" "$BW_CONFIG")
+INSTALLATIONKEY=$(parse_config_item_custom_field "installation-key" "$BW_CONFIG")
+LICENSINGCERTPW=$(bw get password 7123e5d3-f837-4a8c-810a-a7ca00fe1fdd --session "$BW_SESSION")
 
 setup_bitwarden_server () {
   mkdir -p $HOME/$PROJECTSFOLDERNAME

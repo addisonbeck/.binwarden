@@ -2,8 +2,8 @@
 
 source platform
 
-GITFULLNAME=$(parse_config_item_custom_field "git-full-name" $BW_CONFIG)
-EMAIL=$(parse_config_item "['login']['username']" $BW_CONFIG)
+GITFULLNAME=$(parse_config_item_custom_field "git-full-name" "$BW_CONFIG")
+EMAIL=$(parse_config_item "['login']['username']" "$BW_CONFIG")
 
 install_git () {
   install_package "git"
