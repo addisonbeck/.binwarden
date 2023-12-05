@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 
-source platform
 
 init () {
   git clone https://github.com/addisonbeck/environment-setup.git 
@@ -11,6 +10,7 @@ init () {
 
   export PATH="$(pwd)${PATH:+:${PATH}}" 
 
+  source platform
   install-bitwarden
   configure-secrets
 
