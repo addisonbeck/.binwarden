@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 
-
 init () {
   git clone https://github.com/addisonbeck/environment-setup.git 
   cd environment-setup
