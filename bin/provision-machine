@@ -10,8 +10,8 @@ init () {
   export PATH="$(pwd)${PATH:+:${PATH}}" 
 
   source platform
-  install-bitwarden
-  configure-secrets
+  source install-bitwarden
+  source configure-secrets
 
   echo $BW_CONFIG
 

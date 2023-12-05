@@ -3,17 +3,18 @@
 export PATH="$(pwd)${PATH:+:${PATH}}" 
 
 if ! [[ -z "${BW_SESSION}" ]]; then
-  install-bitwarden
-  configure-secrets
+  source install-bitwarden
+  source configure-secrets
 fi
 
-setup-swap
-install-git
-install-docker
-install-dotnet-sdk
-install-node
-install-vnc
-setup-bitwarden-server
-setup-bitwarden-clients
-setup-bitwarden-web
-setup-bitwarden-directory-connector
+source setup-swap
+source install-git
+source install-docker
+source install-dotnet-sdk
+source install-node
+source install-vnc
+source setup-bitwarden-server
+source setup-bitwarden-clients
+source setup-bitwarden-web
+source setup-bitwarden-directory-connector
+
