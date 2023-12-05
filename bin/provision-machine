@@ -49,8 +49,8 @@ set_user_permissions () {
 }
 
 install_self () {
-  cd /home/$OSUSERNAME/$PROJECTSFOLDERNAME
-  su -s /bin/bash -c "git clone https://github.com/addisonbeck/environment-setup.git && cd environment-setup && git fetch -a && git checkout -f dev && git remote set-url origin git@github.com:addisonbeck/environment-setup.git" -l $OSUSERNAME
+  cd /home/$OSUSERNAME
+  su -s /bin/bash -c "cd $PROJECTSFOLDERNAME && git clone https://github.com/addisonbeck/environment-setup.git && cd environment-setup && git fetch -a && git checkout -f dev && git remote set-url origin git@github.com:addisonbeck/environment-setup.git" -l $OSUSERNAME
 }
 
 disable_root_login () {
