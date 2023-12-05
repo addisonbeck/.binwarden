@@ -6,6 +6,7 @@ install-bitwarden
 configure-secrets
 
 OSUSERNAME=$(parse_config_item_custom_field "system-username" $BW_CONFIG)
+PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" $BW_CONFIG)
 
 set_timezone () {
   sudo timedatectl set-timezone America/Chicago
@@ -14,6 +15,7 @@ set_timezone () {
 build_user_directory () {
   mkdir -p /home/$OSUSERNAME/.ssh
   mkdir -p /home/$OSUSERNAME/.cache
+  mkdir -p /home/$OSUSERNAME/$PROJECTSFOLDERNAME
 }
 
 copy_user_ssh_keys () {
@@ -32,6 +34,7 @@ set_user_permissions () {
   chown -R $OSUSERNAME:$OSUSERNAME /home/$OSUSERNAME/
   chown -R $OSUSERNAME:$OSUSERNAME /home/$OSUSERNAME
   chmod 700 /home/$OSUSERNAME/.ssh
+  chmod 700 /home/$OSUSERNAME/$PROJECTSFOLDERNAME
   chmod 644 /home/$OSUSERNAME/.ssh/authorized_keys
   chmod 700 /home/$OSUSERNAME/.cache
 }
