@@ -2,11 +2,21 @@
 
 source platform
 
-install-bitwarden
-configure-secrets
+init () {
+  git clone https://github.com/addisonbeck/environment-setup.git 
+  cd environment-setup
+  git fetch -a
+  git checkout dev
+  cd bin
 
-OSUSERNAME=$(parse_config_item_custom_field "system-username" $BW_CONFIG)
-PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" $BW_CONFIG)
+  export PATH="$(pwd)${PATH:+:${PATH}}" 
+
+  install-bitwarden
+  configure-secrets
+
+  export OSUSERNAME=$(parse_config_item_custom_field "system-username" $BW_CONFIG)
+  export PROJECTSFOLDERNAME=$(parse_config_item_custom_field "projects-folder-name" $BW_CONFIG)
+}
 
 set_timezone () {
   sudo timedatectl set-timezone America/Chicago
@@ -40,8 +50,8 @@ set_user_permissions () {
 }
 
 install_self () {
-  cd /home/$OSUSERNAME
-  su -s /bin/bash -c "git init && git remote add origin https://github.com/addisonbeck/environment-setup.git && git fetch && git checkout -f dev && git remote set-url origin git@github.com:addisonbeck/environment-setup.git" -l $OSUSERNAME
+  cd /home/$OSUSERNAME/$PROJECTSFOLDERNAME
+  su -s /bin/bash -c "git clone https://github.com/addisonbeck/environment-setup.git && cd environment-setup && git fetch -a && git checkout -f dev && git remote set-url origin git@github.com:addisonbeck/environment-setup.git" -l $OSUSERNAME
 }
 
 disable_root_login () {
@@ -53,6 +63,7 @@ login () {
   su -l $OSUSERNAME -w "BW_SESSION,BW_CONFIG"
 }
 
+init
 set_timezone
 build_user_directory
 copy_user_ssh_keys
